@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Pencarian Data Anggota</title>
+<style>
+body { font-family: Arial; background:#f4f6f8; }
+.box { max-width:600px; margin:50px auto; background:#fff; padding:20px; border-radius:8px; }
+input { width:100%; padding:10px; margin-bottom:10px; }
+table { width:100%; border-collapse:collapse; }
+td, th { border:1px solid #ddd; padding:8px; }
+</style>
+</head>
+<body>
+
+
+<div class="box">
+<h2>Cari Data Anggota</h2>
+<input type="text" id="search" placeholder="Masukkan Nomor Anggota">
+<div id="result"></div>
+</div>
+
+
+<script>
+fetch('data.csv')
+.then(res => res.text())
+.then(text => {
+const rows = text.split('\n').slice(1);
+document.getElementById('search').addEventListener('input', function(){
+let keyword = this.value.trim();
+let output = '';
+rows.forEach(row => {
+let col = row.split(',');
+if(col[2] === keyword) {
+output = `<table>
+<tr><th>Nama</th><td>${col[1]}</td></tr>
+<tr><th>Nomor</th><td>${col[2]}</td></tr>
+<tr><th>Jabatan</th><td>${col[3]}</td></tr>
+<tr><th>Status</th><td>${col[4]}</td></tr>
+</table>`;
+}
+});
+document.getElementById('result').innerHTML = output || 'Data tidak ditemukan';
+});
+});
+</script>
+
+
+</body>
+</html>
